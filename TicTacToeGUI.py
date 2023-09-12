@@ -9,14 +9,13 @@ window.geometry("400x500") #Set the size of the window
 playerTurn = 0
 cells = {}
 
+#Initiate tk frames
 menuFrame = tk.Frame(master=window, bg="black")
 menuFrame.pack()
 turnLabel = tk.Label(master=menuFrame, text="Click a square to begin", font=font.Font(size=24), fg="black", width=20, height=2)
 turnLabel.pack()
-
 gridFrame = tk.Frame(master=window)
 gridFrame.pack()
-
 buttonFrame = tk.Frame(master=window)
 buttonFrame.pack()
 
@@ -32,7 +31,8 @@ def Move(event, btnNum):
     #Check if the square has already been played
     if cells[btnNum] == "X" or cells[btnNum] == "O":
         return
-        
+    
+    #Check whoose turn it is.
     if playerTurn % 2 == 0:
         buttonePressed.config(text="X", bg="lightgreen", state="disabled")
         turnLabel.config(text="Player O turn!")
@@ -43,15 +43,18 @@ def Move(event, btnNum):
         turnLabel.config(text="Player X turn!")
         cells[btnNum] = ("O")
     
+    #Check if the move made was a winning move.
     winningMove = CheckWinner()
     
     #Check if there is a winner
     if winningMove == True:
         EndGame(playerTurn, winningMove)
+        return
     
-    #Check if the game is tied
+    #Check if all the squares are filled = game is tied.
     if playerTurn >= 8:
         EndGame(playerTurn, winningMove)
+        return
     
     #Move to next players turn
     playerTurn += 1
